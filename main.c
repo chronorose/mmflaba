@@ -1,18 +1,3 @@
-/*
-░██╗░░░░░░░██╗██╗████████╗██╗░░██╗  ██╗░░░░░░█████╗░██╗░░░██╗███████╗
-░██║░░██╗░░██║██║╚══██╔══╝██║░░██║  ██║░░░░░██╔══██╗██║░░░██║██╔════╝
-░╚██╗████╗██╔╝██║░░░██║░░░███████║  ██║░░░░░██║░░██║╚██╗░██╔╝█████╗░░
-░░████╔═████║░██║░░░██║░░░██╔══██║  ██║░░░░░██║░░██║░╚████╔╝░██╔══╝░░
-░░╚██╔╝░╚██╔╝░██║░░░██║░░░██║░░██║  ███████╗╚█████╔╝░░╚██╔╝░░███████╗
-░░░╚═╝░░░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝  ╚══════╝░╚════╝░░░░╚═╝░░░╚══════╝
-
-░██████╗██╗░░░██╗░██████╗░░░██████╗░██████╗░░█████╗░
-██╔════╝╚██╗░██╔╝██╔════╝░░░██╔══██╗██╔══██╗██╔══██╗
-╚█████╗░░╚████╔╝░╚█████╗░░░░██████╔╝██████╔╝██║░░██║
-░╚═══██╗░░╚██╔╝░░░╚═══██╗░░░██╔═══╝░██╔══██╗██║░░██║
-██████╔╝░░░██║░░░██████╔╝██╗██║░░░░░██║░░██║╚█████╔╝
-╚═════╝░░░░╚═╝░░░╚═════╝░╚═╝╚═╝░░░░░╚═╝░░╚═╝░╚════╝░
-*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
@@ -30,10 +15,10 @@ typedef struct {
 } String;
 
 String* createString() {
-    String* str = malloc(sizeof(String));
+    String* str = (String*)malloc(sizeof(String));
     str->size = 0;
     str->cap = 8;
-    str->str = malloc(sizeof(char) * str->cap);
+    str->str = (char*)malloc(sizeof(char) * str->cap);
     return str;
 }
 
@@ -45,13 +30,13 @@ void freeStr(String* str) {
 void push_str(String* str, char ch) {
     if (str->size >= str->cap) {
         str->cap *= 2;
-        str->str = realloc(str->str, str->cap);
+        str->str = (char*)realloc(str->str, str->cap);
     }
     str->str[str->size++] = ch;
 }
 
 Node* nNode(int value) {
-    Node* newNode = malloc(sizeof(Node));
+    Node* newNode = (void*)malloc(sizeof(Node));
     newNode->value = value;
     newNode->right = newNode->left = NULL;
     return newNode;
@@ -107,7 +92,7 @@ char* readToBuf(FILE* input) {
     fseek(input, 0, SEEK_END);
     int size = ftell(input);
     fseek(input, 0, SEEK_SET);
-    char* buf = malloc(sizeof(char) * size + 1);
+    char* buf = (char*)malloc(sizeof(char) * size + 1);
     fread(buf, sizeof(char), size, input);
     buf[size] = '\0';
     return buf;
@@ -193,7 +178,7 @@ int main() {
             addNode(root, to_add);
             i++;
         }
-        if (!checkWord(str, &i, "Border: ")) {
+        if (!checkWord(str, &i, (char*)"Border: ")) {
             printf("incorrect input");
         }
         int border = deserialize_number(str, &i);
